@@ -37,7 +37,7 @@ cmake_args = [
 
 # Add macOS-specific flags if needed
 if Sys.isapple()
-    push!(cmake_args, "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.15")
+    push!(cmake_args, "-DCMAKE_OSX_DEPLOYMENT_TARGET=11.0")
 end
 
 # Run CMake configure
