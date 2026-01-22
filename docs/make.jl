@@ -1,24 +1,24 @@
 using Documenter
 using Semigroups
 
-DocMeta.setdocmeta!(Semigroups, :DocTestSetup, :(using Semigroups); recursive = true)
+DocMeta.setdocmeta!(Semigroups, :DocTestSetup, :(using Semigroups); recursive=true)
 
 makedocs(;
-    modules = [Semigroups],
-    authors = "James Swent",
-    sitename = "Semigroups.jl",
-    format = Documenter.HTML(;
-        canonical = "https://github.com/jswent/Semigroups.jl",
-        edit_link = "main",
-        assets = String[],
-        collapselevel = 1,
+    modules=[Semigroups],
+    authors=["James W. Swent", "James D. Mitchell"],
+    sitename="Semigroups.jl",
+    format=Documenter.HTML(;
+        canonical="https://github.com/jswent/Semigroups.jl",
+        edit_link="main",
+        assets=String[],
+        collapselevel=1,
     ),
-    pages = [
+    pages=[
         "Home" => "index.md",
         "Package Info" => [
             "Installation" => "package-info/installation.md",
             "Authors" => "package-info/authors.md",
-            "Bibliography" => "package-info/bibliography.md",
+            #= "Bibliography" => "package-info/bibliography.md", =#
             "Exceptions" => "package-info/exceptions.md",
         ],
         "Data Structures" => [
@@ -36,5 +36,5 @@ makedocs(;
         ],
         "Main Algorithms" => ["Overview" => "main-algorithms/index.md"],
     ],
-    warnonly = [:missing_docs],
+    warnonly=[:missing_docs],
 )
