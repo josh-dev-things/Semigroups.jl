@@ -52,12 +52,12 @@ function check_transf_basic(T)
     # Test rank
     @test rank(x) == 16  # 16 distinct values: 2,3,4,...,17
     @test rank(one(x)) == 17
-    @test rank(T([1 for _ in 1:17])) == 1
+    @test rank(T([1 for _ = 1:17])) == 1
 
     # Test degree
     @test degree(x) == 17
     @test degree(one(x)) == 17
-    @test degree(T([1 for _ in 1:17])) == 17
+    @test degree(T([1 for _ = 1:17])) == 17
 
     # Product operations
     check_product_inplace(x)
@@ -110,12 +110,12 @@ function check_pperm_basic(T)
     check_product_inplace(x)
 
     # Test images - should have UNDEFINED for undefined points
-    imgs = [x[i] for i in 1:degree(x)]
+    imgs = [x[i] for i = 1:degree(x)]
     @test imgs[1] === UNDEFINED
     @test imgs[2] == 5
     @test imgs[3] == 8
     @test imgs[4] == 7
-    @test all(imgs[i] === UNDEFINED for i in 5:17)
+    @test all(imgs[i] === UNDEFINED for i = 5:17)
 end
 
 function check_perm_basic(T)
