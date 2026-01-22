@@ -7,7 +7,7 @@ makedocs(;
     modules=[Semigroups],
     sitename="Semigroups.jl",
     format=Documenter.HTML(;
-        canonical="https://github.com/jswent/Semigroups.jl",
+        canonical="https://github.com/libsemigroups/Semigroups.jl",
         edit_link="main",
         assets=String[],
         collapselevel=1,

@@ -12,7 +12,7 @@ Currently, Semigroups.jl must be installed from source:
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/jswent/Semigroups.jl")
+Pkg.add(url="https://github.com/libsemigroups/Semigroups.jl")
 ```
 
 ## Building the C++ Bindings
