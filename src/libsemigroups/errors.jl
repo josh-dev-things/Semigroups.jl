@@ -80,12 +80,17 @@ end
 Wrap a libsemigroups C++ call to catch exceptions and rethrow them as
 `LibsemigroupsError` with the C++ prefix stripped.
 
+!!! warning
+    Error messages originate from the C++ library and use 0-based indexing
+    for positions and values.
+
 # Example
 ```julia
 cxx_obj = @wrap_libsemigroups_call begin
     CxxType(StdVector(images_typed))
 end
 ```
+
 """
 macro wrap_libsemigroups_call(expr)
     return quote
