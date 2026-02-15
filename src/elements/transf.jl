@@ -340,11 +340,7 @@ function PPerm(images::AbstractVector, ::Type{T}) where {T}
 
     images_typed = Vector{T}(undef, n)
     for (i, img) in enumerate(images)
-        if img === UNDEFINED
-            images_typed[i] = T(0)    # 0 = UNDEFINED in 1-based convention
-        else
-            images_typed[i] = T(img)  # 1-based, C++ handles conversion
-        end
+        images_typed[i] = convert(T, img)  # UNDEFINED → T(0), integers → T(img)
     end
 
     cxx_obj = @wrap_libsemigroups_call CxxType(StdVector{T}(images_typed))
@@ -436,6 +432,7 @@ function Base.getindex(p::PPerm, i::Integer)
     if i < 1 || i > degree(p)
         throw(BoundsError(p, i))
     end
+    # C++ binding returns 0 for undefined points (via to_1_based_undef)
     result = LibSemigroups.getindex(p.cxx_obj, UInt(i))
     return result == 0 ? UNDEFINED : Int(result)
 end

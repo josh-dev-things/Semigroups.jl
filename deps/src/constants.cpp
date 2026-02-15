@@ -22,24 +22,6 @@ namespace libsemigroups_julia {
 
 void define_constants(jl::Module & m)
 {
-  // UNDEFINED values for different integer types
-  // UNDEFINED represents max value of the type
-  m.method("UNDEFINED_UInt8", []() -> uint8_t {
-    return libsemigroups::UNDEFINED;
-  });
-  m.method("UNDEFINED_UInt16", []() -> uint16_t {
-    return libsemigroups::UNDEFINED;
-  });
-  m.method("UNDEFINED_UInt32", []() -> uint32_t {
-    return libsemigroups::UNDEFINED;
-  });
-  m.method("UNDEFINED_UInt64", []() -> uint64_t {
-    return libsemigroups::UNDEFINED;
-  });
-  m.method("UNDEFINED_Int64", []() -> int64_t {
-    return libsemigroups::UNDEFINED;
-  });
-
   // POSITIVE_INFINITY values for different integer types
   // POSITIVE_INFINITY represents max-1 value of the type
   m.method("POSITIVE_INFINITY_UInt8", []() -> uint8_t {

@@ -20,9 +20,11 @@ struct UndefinedType end
 """
     UNDEFINED
 
-Represents an undefined value in libsemigroups. Can be compared with
-any integer type using `==` and `!=`. Converts to the maximum value
-of the target integer type.
+Represents an undefined value. Used as the sentinel for undefined points
+in partial permutations (`PPerm`). Compare using `===` or `==`.
+
+`UNDEFINED` is a distinct singleton type — it is never equal to any integer.
+`convert(T, UNDEFINED)` returns `T(0)` (the internal sentinel for 1-based indexing).
 """
 const UNDEFINED = UndefinedType()
 
@@ -60,12 +62,8 @@ const LIMIT_MAX = LimitMaxType()
 
 # Conversion functions to get the underlying integer values
 
-# UNDEFINED conversions
-Base.convert(::Type{UInt8}, ::UndefinedType) = LibSemigroups.UNDEFINED_UInt8()
-Base.convert(::Type{UInt16}, ::UndefinedType) = LibSemigroups.UNDEFINED_UInt16()
-Base.convert(::Type{UInt32}, ::UndefinedType) = LibSemigroups.UNDEFINED_UInt32()
-Base.convert(::Type{UInt64}, ::UndefinedType) = LibSemigroups.UNDEFINED_UInt64()
-Base.convert(::Type{Int64}, ::UndefinedType) = LibSemigroups.UNDEFINED_Int64()
+# UNDEFINED conversions — returns 0 (the Julia sentinel for UNDEFINED in 1-based indexing)
+Base.convert(::Type{T}, ::UndefinedType) where {T<:Integer} = T(0)
 
 # POSITIVE_INFINITY conversions
 Base.convert(::Type{UInt8}, ::PositiveInfinityType) =
@@ -97,9 +95,9 @@ Base.convert(::Type{Int64}, ::LimitMaxType) = LibSemigroups.LIMIT_MAX_Int64()
 
 # Comparison operations
 
-# UNDEFINED comparisons (equality only)
-Base.:(==)(x::Integer, ::UndefinedType) = x == convert(typeof(x), UNDEFINED)
-Base.:(==)(::UndefinedType, x::Integer) = convert(typeof(x), UNDEFINED) == x
+# UNDEFINED comparisons — UNDEFINED is a distinct sentinel, never equal to any integer
+Base.:(==)(::Integer, ::UndefinedType) = false
+Base.:(==)(::UndefinedType, ::Integer) = false
 Base.:(==)(::UndefinedType, ::UndefinedType) = true
 Base.:(==)(::UndefinedType, ::PositiveInfinityType) = false
 Base.:(==)(::UndefinedType, ::NegativeInfinityType) = false
@@ -145,12 +143,11 @@ Base.:(<)(x::Integer, ::LimitMaxType) = x < convert(typeof(x), LIMIT_MAX)
 # Helper functions to check if a value is a special constant
 
 """
-    is_undefined(x::Integer, T::Type = typeof(x))
+    is_undefined(x)
 
-Check if `x` equals UNDEFINED for the given integer type `T`.
+Check if `x` is UNDEFINED.
 """
-is_undefined(x::Integer, ::Type{T} = typeof(x)) where {T<:Integer} =
-    x == convert(T, UNDEFINED)
+is_undefined(x) = x === UNDEFINED
 
 """
     is_positive_infinity(x::Integer, T::Type = typeof(x))

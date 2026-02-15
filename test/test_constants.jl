@@ -9,11 +9,12 @@ test_constants.jl - Tests for libsemigroups constants
 """
 
 @testset "Constants" begin
-    # Test UNDEFINED conversions
-    @test convert(UInt8, UNDEFINED) == typemax(UInt8)
-    @test convert(UInt16, UNDEFINED) == typemax(UInt16)
-    @test convert(UInt32, UNDEFINED) == typemax(UInt32)
-    @test convert(UInt64, UNDEFINED) == typemax(UInt64)
+    # Test UNDEFINED conversions — 0 is the Julia sentinel (never a valid 1-based index)
+    @test convert(UInt8, UNDEFINED) === UInt8(0)
+    @test convert(UInt16, UNDEFINED) === UInt16(0)
+    @test convert(UInt32, UNDEFINED) === UInt32(0)
+    @test convert(UInt64, UNDEFINED) === UInt64(0)
+    @test convert(Int64, UNDEFINED) === Int64(0)
 
     # Test POSITIVE_INFINITY conversions
     @test convert(UInt8, POSITIVE_INFINITY) == typemax(UInt8) - 1
@@ -43,6 +44,13 @@ test_constants.jl - Tests for libsemigroups constants
     @test !(UNDEFINED == NEGATIVE_INFINITY)
     @test !(POSITIVE_INFINITY == NEGATIVE_INFINITY)
 
+    # UNDEFINED is never equal to any integer (it is a distinct sentinel type)
+    @test !(0 == UNDEFINED)
+    @test !(UNDEFINED == 0)
+    @test !(1 == UNDEFINED)
+    @test !(typemax(UInt8) == UNDEFINED)
+    @test !(typemax(UInt64) == UNDEFINED)
+
     # Test ordering comparisons
     @test NEGATIVE_INFINITY < POSITIVE_INFINITY
     @test !(POSITIVE_INFINITY < NEGATIVE_INFINITY)
@@ -52,7 +60,9 @@ test_constants.jl - Tests for libsemigroups constants
     @test !(0 < NEGATIVE_INFINITY)
 
     # Test is_* helper functions
-    @test is_undefined(typemax(UInt64))
+    @test is_undefined(UNDEFINED)
+    @test !is_undefined(0)
+    @test !is_undefined(typemax(UInt64))
     @test is_positive_infinity(typemax(UInt64) - 1)
     @test is_limit_max(typemax(UInt64) - 2)
     @test is_negative_infinity(typemin(Int64))
